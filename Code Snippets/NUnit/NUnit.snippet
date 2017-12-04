@@ -25,13 +25,9 @@
 
                     #endregion
 
-
-
                     #region Act
 
                     #endregion
-
-
 
                     #region Assert
 
@@ -60,7 +56,18 @@
                 [TestFixture]
                 public class #FixtureName#
                 {
-
+                    [SetUp]
+					public void Setup()
+					{
+					    // Add you setup code here
+					}
+					
+					
+					[TearDown] 
+					public void TearDown()
+					{
+					    // Add you teardown code here
+					}
                 }
                 ]]>
       </Code>
