@@ -38,6 +38,114 @@
     </Snippet>
   </CodeSnippet>
 
+    <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Nunit testcase with class as testcase source provider</Title>
+      <Author>AMewald</Author>
+      <Shortcut>nunittestcasewithsourceclass</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MethodName</ID>
+          <Default>MethodName</Default>
+        </Literal>
+        <Literal Editable="true">
+          <ID>SourceClassName</ID>
+          <Default>SourceClassName</Default>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ProvideParameters</ID>
+          <Default>ProvideParameters</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Delimiter="$">
+        <![CDATA[
+                [Test]
+                [TestCaseSource(typeof($SourceClassName$), nameof($SourceClassName$.$ProvideParameters$))]
+                [Description("Some test description")]
+                [MaxTime(1000)]
+                public void $MethodName$ ()
+                {
+                    #region Arrange
+
+                    #endregion
+
+                    #region Act
+
+                    #endregion
+
+                    #region Assert
+
+                    #endregion
+                }
+
+                
+                public class $SourceClassName$
+                {
+                  public static IEnumerable<TestCaseData> $ProvideParameters$()
+                  {
+                     yield return new TestCaseData(/*Add your parameters here!*/);
+                  }
+
+                }
+
+
+                ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Nunit testcase with provider method as testcase source</Title>
+      <Author>AMewald</Author>
+      <Shortcut>nunittestcasewithsourcemethod</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>MethodName</ID>
+          <Default>MethodName</Default>
+        </Literal>
+        <Literal Editable="true">
+          <ID>ProvideParameters</ID>
+          <Default>ProvideParameters</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Delimiter="$">
+        <![CDATA[
+                [Test]
+                [TestCaseSource(nameof($ProvideParameters$))]
+                [Description("Some test description")]
+                [MaxTime(1000)]
+                public void $MethodName$ ()
+                {
+                    #region Arrange
+
+                    #endregion
+
+                    #region Act
+
+                    #endregion
+
+                    #region Assert
+
+                    #endregion
+                }
+
+                
+                public static IEnumerable<TestCaseData> $ProvideParameters$()
+                {
+                  yield return new TestCaseData(/*Add your parameters here!*/);
+                }
+
+                ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+
+
   <CodeSnippet Format="1.0.0">
     <Header>
       <Title>New test fixture </Title>
