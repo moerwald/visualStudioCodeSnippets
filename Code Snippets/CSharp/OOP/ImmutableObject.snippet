@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CodeSnippets
+    xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Immutable Object</Title>
+      <Author>AMewald</Author>
+      <Shortcut>oopImmutableObject</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>ClassName</ID>
+          <Default>ClassName</Default>
+        </Literal>
+      </Declarations>
+      <Code Language="CSharp" Delimiter="$">
+        <![CDATA[
+                
+                ///
+                /// Sealed class forces that Equals methods are only
+                /// called with instances of $ClassName$ and not any
+                /// derrived classes, which causes that equality is only
+                /// done for properties of this class.
+                ///
+                public sealed class $ClassName$ : IEquatable<$ClassName$>
+                {
+
+                    public $type1$ $param1$ {get;}
+                    public $type2$ $param2$ {get;}
+
+                   /// <summary>
+                   /// Ensure that class can only be created via Instance
+                   /// </summary>
+                   private $ClassName$($type1$ $param1$, $type2$ $param2$)
+                   {
+                       this.$param1$ = $param1$
+                       this.$param2$ = $param2$
+                   }
+
+                   public override bool Equals(object other) => 
+                        this.Equals(other as $ClassName$);
+
+                    public bool Equals($ClassName$ other) =>
+                        other != null &&
+                        this.$param1$ == other.$param1$ && 
+                        this.$param2$ == other.$param2$;
+
+                    public override int GetHashCode() =>
+                        this.$param1$.GetHashCode() ^ this.$param2$.GetHashCode();
+
+                    public static bool operator == ($ClassName$ a, $ClassName$ b) =>
+                        (object.ReferenceEquals(a, null) && object.ReferenceEquals(b, null)) ||
+                        (!object.ReferenceEquals(a, null) && a.Equals(b));
+
+                    public static bool operator != ($ClassName$ a, $ClassName$ b) => !(a == b);
+
+                }
+                ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+</CodeSnippets>
