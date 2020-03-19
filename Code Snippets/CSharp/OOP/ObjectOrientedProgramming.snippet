@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <CodeSnippets
     xmlns="http://schemas.microsoft.com/VisualStudio/2005/CodeSnippet">
+  
+  <!-- IMMUTABLE OBJECT-->
   <CodeSnippet Format="1.0.0">
     <Header>
       <Title>Immutable Object</Title>
@@ -74,6 +76,75 @@
 
                 }
                 ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- NULL OBJECT -->
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Null Object</Title>
+      <Author>AMewald</Author>
+      <Shortcut>oopNullObject</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>InterfaceName</ID>
+          <Default>InterfaceName</Default>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Methods</ID>
+          <Default>public void Method1();</Default>
+        </Literal>
+      </Declarations>
+
+      <Code Language="CSharp" Delimiter="$">
+        <![CDATA[
+
+                public interface I$InterfaceName$
+                {
+                  // TODO: Add interface methods here
+                  $Methods$
+                }
+
+                public class Void$InterfaceName$ : I$InterfaceName$
+                {
+                  ///
+                  /// Lets make the singleton thread static, so each
+                  /// thread has a seperate copy of the singleton.
+                  /// This is ok because this object shall never
+                  /// have any logic in it.
+                  ///
+                  [ThreadStatic]
+                  private static Void$InterfaceName$ instance;
+
+                  /// Avoid explicit object construction. Use
+                  private Void$InterfaceName$(){}
+
+                  public static Void$InterfaceName$ Instance
+                  {
+                    get
+                    {
+                      if (instance == null)
+                      {
+                        instance = new Void$InterfaceName$();
+                      }
+                      return instance;
+                    }
+                  }
+
+                  // TODO: Add default implementation of interface
+                  $Methods$
+
+                }
+
+                /// Class representing logic, data, etc.
+                public class X_X_X_X$InterfaceName$ : I$InterfaceName$
+                {
+
+                }
+        ]]>
       </Code>
     </Snippet>
   </CodeSnippet>
