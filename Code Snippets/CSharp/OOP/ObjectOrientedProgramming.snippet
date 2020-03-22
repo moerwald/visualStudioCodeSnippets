@@ -95,7 +95,7 @@
         </Literal>
         <Literal Editable="true">
           <ID>Methods</ID>
-          <Default>public void Method1();</Default>
+          <Default>void Method1();</Default>
         </Literal>
       </Declarations>
 
@@ -144,6 +144,87 @@
                 {
 
                 }
+        ]]>
+      </Code>
+    </Snippet>
+  </CodeSnippet>
+
+  <!-- Chained rules -->
+
+  <CodeSnippet Format="1.0.0">
+    <Header>
+      <Title>Rule Chain</Title>
+      <Author>AMewald</Author>
+      <Shortcut>oopConditionalRuleChainObject</Shortcut>
+    </Header>
+    <Snippet>
+      <Declarations>
+        <Literal Editable="true">
+          <ID>InterfaceName</ID>
+          <Default>InterfaceName</Default>
+        </Literal>
+        <Literal Editable="true">
+          <ID>Methods</ID>
+          <Default>void Method1();</Default>
+        </Literal>
+      </Declarations>
+
+      <Code Language="CSharp" Delimiter="$">
+        <![CDATA[
+
+                public interface I$InterfaceName$
+                {
+                  // TODO: Add interface methods here
+                  $Methods$
+                  Action<Action> InvokeAction { get; }
+                }
+
+                public sealed class ConditionalRule : I$InterfaceName$
+                {
+                  public ConditionalRule(Func<bool> predicate, Action<Action> action, I$InterfaceName$ next)
+                  {
+                    this.Predicate = predicate ?? throw new ArgumentNullException(nameof(predicate));
+                    this.Action = action ?? throw new ArgumentNullException(nameof(action));
+                    this.Next = next ?? throw new ArgumentNullException(nameof(next));
+                  }
+
+                  private I$InterfaceName$ Next { get; set; }
+                  private Func<bool> Predicate { get; set; }
+                  private Action<Action> Action { get; set; }
+
+                  public Action<Action> InvokeAction 
+                  {
+                      get 
+                      {
+                          if (this.Predicate()) 
+                              return this.FireAction;
+                          return this.Forward; 
+                      } 
+                  }
+
+                  #region Implement interface method HERE
+                  public $Methods$
+                  {
+                    throw new NotImplementedException();
+                  }
+
+                  #endregion
+
+                  private void Forward(Action action) => this.Next.InvokeAction(action);
+
+                  private void FireAction(Action action)
+                  {
+                      Action<Action> subsequentAction = this.Forward;
+
+                      this.Action(() =>
+                      {
+                          action?.Invoke();
+                          subsequentAction = a => { };
+                      });
+
+                      subsequentAction(action);
+                  }
+              }
         ]]>
       </Code>
     </Snippet>
